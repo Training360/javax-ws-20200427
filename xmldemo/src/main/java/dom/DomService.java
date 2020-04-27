@@ -26,20 +26,28 @@ public class DomService {
             var catalog = new Catalog();
             catalog.setBooks(new ArrayList<>());
 
-            var catalogNode = doc.getChildNodes().item(1);
-            var catalogChildren = catalogNode.getChildNodes();
-            for (int i = 0; i < catalogChildren.getLength(); i++) {
-                if (catalogChildren.item(i).getNodeName().equals("book")) {
-                    var book = new Book();
-//                    System.out.println(catalogChildren.item(i).getNodeName());
-                    book.setIsbn10(((Element)(catalogChildren.item(i))).getAttribute("isbn10"));
-                    if (catalogChildren.item(i).getChildNodes().getLength() > 0) {
-                        var titleElement = (Element) catalogChildren.item(i).getChildNodes().item(1);
-//                        System.out.println(titleElement.getChildNodes().item(0).getNodeValue());
-                        book.setTitle(titleElement.getChildNodes().item(0).getNodeValue());
-                    }
-                    catalog.getBooks().add(book);
-                }
+//            var catalogNode = doc.getChildNodes().item(1);
+//            var catalogChildren = catalogNode.getChildNodes();
+//            for (int i = 0; i < catalogChildren.getLength(); i++) {
+//                if (catalogChildren.item(i).getNodeName().equals("book")) {
+//                    var book = new Book();
+////                    System.out.println(catalogChildren.item(i).getNodeName());
+//                    book.setIsbn10(((Element)(catalogChildren.item(i))).getAttribute("isbn10"));
+//                    if (catalogChildren.item(i).getChildNodes().getLength() > 0) {
+//                        var titleElement = (Element) catalogChildren.item(i).getChildNodes().item(1);
+////                        System.out.println(titleElement.getChildNodes().item(0).getNodeValue());
+//                        book.setTitle(titleElement.getChildNodes().item(0).getNodeValue());
+//                    }
+//                    catalog.getBooks().add(book);
+//                }
+//            }
+
+            var bookElements = doc.getElementsByTagName("book");
+            for (int i = 0; i < bookElements.getLength(); i++) {
+                var book = new Book();
+                book.setIsbn10(((Element)(bookElements.item(i))).getAttribute("isbn10"));
+                book.setTitle(((Element)bookElements.item(i)).getElementsByTagName("title").item(0).getChildNodes().item(0).getNodeValue());
+                catalog.getBooks().add(book);
             }
 
             return catalog;
