@@ -15,8 +15,26 @@ import java.util.List;
 public class StaxService {
 
     public List<String> readIsbn10Numbers(Reader source) {
-        // TODO
-        return null;
+        try {
+            List<String> titles = new ArrayList<>();
+
+            var f = XMLInputFactory.newInstance();
+            var r = f.createXMLStreamReader(source);
+
+            while (r.hasNext()) {
+                if (r.getEventType() == XMLStreamConstants.START_ELEMENT) {
+                    // Ezt kellett módosítani
+                    if (r.getName().getLocalPart().equals("book")) {
+                        titles.add(r.getAttributeValue(null, "isbn10"));
+                    }
+                }
+                r.next();
+            }
+            return titles;
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Can not read", e);
+        }
     }
 
     public List<String> readTitles(Reader source) {
@@ -46,7 +64,7 @@ public class StaxService {
                     DomService.class.getResourceAsStream("/catalog.xml")
             ));
             try (reader) {
-                System.out.println(new StaxService().readTitles(reader));
+                System.out.println(new StaxService().readIsbn10Numbers(reader));
             }
             catch (IOException ioe) {
                 throw new IllegalStateException("Can not read file", ioe);
