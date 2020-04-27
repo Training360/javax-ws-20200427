@@ -26,7 +26,16 @@ public class SaxService {
     }
 
     public List<String> readTitles(Reader reader) {
-        return List.of();
+        try {
+            var factory = SAXParserFactory.newInstance();
+            var saxParser = factory.newSAXParser();
+            var handler = new TitlesHandler();
+            saxParser.parse(new InputSource(reader), handler);
+            return handler.getTitles();
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Can not read xml", e);
+        }
     }
 
     public static void main(String[] args) {
