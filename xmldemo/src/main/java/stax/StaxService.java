@@ -1,14 +1,14 @@
 package stax;
 
+import dom.Book;
+import dom.Catalog;
 import dom.DomService;
 import sax.SaxService;
 
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamConstants;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,15 +59,46 @@ public class StaxService {
         }
     }
 
+    public void writeTitles(Writer dest, Catalog catalog) {
+        // <catalog><book>...</book>
+        try {
+            var f = XMLOutputFactory.newInstance();
+            var w = f.createXMLStreamWriter(dest);
+            w.writeStartDocument();
+            w.writeStartElement("catalog");
+            for (var book: catalog.getBooks()) {
+                w.writeStartElement("book");
+                w.writeCharacters(book.getTitle());
+                w.writeEndElement();
+            }
+            w.writeEndElement();
+            w.flush();
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Can not write", e);
+        }
+    }
+
+    public void writeCatalog(Writer dest, Catalog catalog) {
+
+    }
+
     public static void main(String[] args) {
-            var reader = new BufferedReader(new InputStreamReader(
-                    DomService.class.getResourceAsStream("/catalog.xml")
-            ));
-            try (reader) {
-                System.out.println(new StaxService().readIsbn10Numbers(reader));
-            }
-            catch (IOException ioe) {
-                throw new IllegalStateException("Can not read file", ioe);
-            }
+//            var reader = new BufferedReader(new InputStreamReader(
+//                    DomService.class.getResourceAsStream("/catalog.xml")
+//            ));
+//            try (reader) {
+//                System.out.println(new StaxService().readIsbn10Numbers(reader));
+//            }
+//            catch (IOException ioe) {
+//                throw new IllegalStateException("Can not read file", ioe);
+//            }
+
+        var service = new StaxService();
+        var catalog = new Catalog(List.of(new dom.Book("111", "aaa"),
+                new Book("222", "bbb")));
+        var writer = new StringWriter();
+        service.writeCatalog(writer, catalog);
+        System.out.println(writer.toString());
     }
 }
