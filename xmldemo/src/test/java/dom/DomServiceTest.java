@@ -99,4 +99,18 @@ public class DomServiceTest {
                     .isEqualTo("059610149X");
         }
     }
+
+    @Test
+    void testWriteCatalog() {
+        var service = new DomService();
+        var catalog = new Catalog(List.of(new Book("111", "aaa"),
+                new Book("222", "bbb")));
+
+        StringWriter writer = new StringWriter();
+        service.writeCatalog(catalog, writer);
+
+        XmlAssert.assertThat(writer.toString())
+                .valueByXPath("/catalog/book[2]")
+                .isEqualTo("bbb");
+    }
 }

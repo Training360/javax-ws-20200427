@@ -17,9 +17,37 @@ import java.util.ArrayList;
 
 public class DomService {
 
-    public void writeCatalog(Catalog catalog, Writer writer) {
+    public void writeCatalog(Catalog catalog, Writer dst) {
         // <catalog><book>Java and XML</book><book>Pro XML Development
         //            with Java Technology</book></catalog>
+
+        try {
+            var factory = DocumentBuilderFactory.newInstance();
+            var builder = factory.newDocumentBuilder();
+            var doc = builder.newDocument();
+            var catalogElement = doc.createElement("catalog");
+            doc.appendChild(catalogElement);
+            for (var book: catalog.getBooks()) {
+                var bookElement = doc.createElement("book");
+                var textElement = doc.createTextNode(book.getTitle());
+                bookElement.appendChild(textElement);
+                catalogElement.appendChild(bookElement);
+            }
+
+            var transformerFactory = TransformerFactory.newInstance();
+            var transformer = transformerFactory.newTransformer();
+            var source = new DOMSource(doc);
+            var result = new StreamResult(dst);
+
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+            transformer.transform(source, result);
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Can not parse XML", e);
+        }
+
 
         // 1. létre kell hozni egy dokumentumot
 
