@@ -80,7 +80,25 @@ public class StaxService {
     }
 
     public void writeCatalog(Writer dest, Catalog catalog) {
-
+        try {
+            var f = XMLOutputFactory.newInstance();
+            var w = f.createXMLStreamWriter(dest);
+            w.writeStartDocument();
+            w.writeStartElement("catalog");
+            for (var book: catalog.getBooks()) {
+                w.writeStartElement("book");
+                w.writeAttribute("isbn10", book.getIsbn10());
+                w.writeStartElement("title");
+                w.writeCharacters(book.getTitle());
+                w.writeEndElement();
+                w.writeEndElement();
+            }
+            w.writeEndElement();
+            w.flush();
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Can not write", e);
+        }
     }
 
     public static void main(String[] args) {
