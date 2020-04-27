@@ -17,6 +17,21 @@ import java.util.ArrayList;
 
 public class DomService {
 
+    public void writeCatalog(Catalog catalog, Writer writer) {
+        // <catalog><book>Java and XML</book><book>Pro XML Development
+        //            with Java Technology</book></catalog>
+
+        // 1. létre kell hozni egy dokumentumot
+
+        // factory, builder
+        // builder. newDocument()
+
+        // Document.createElement -> Element
+        //appendChild()
+
+        // DOM kiírása transformerrel
+    }
+
     public void writeXml(Writer dst, Reader src) {
         try {
             var factory = DocumentBuilderFactory.newInstance();
@@ -24,6 +39,7 @@ public class DomService {
             var doc = builder.parse(new InputSource(src));
             var bookNode = doc.getElementsByTagName("book").item(0);
             var catalogNode = doc.getElementsByTagName("catalog").item(0);
+
 
             for (int i = 0; i < 3; i++) {
                 var clonedNode = bookNode.cloneNode(true);
