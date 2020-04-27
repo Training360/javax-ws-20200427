@@ -8,13 +8,44 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
 import java.util.ArrayList;
 
 public class DomService {
+
+    public void writeXml(Writer dst, Reader src) {
+        try {
+            var factory = DocumentBuilderFactory.newInstance();
+            var builder = factory.newDocumentBuilder();
+            var doc = builder.parse(new InputSource(src));
+            var bookNode = doc.getElementsByTagName("book").item(0);
+            var catalogNode = doc.getElementsByTagName("catalog").item(0);
+
+            for (int i = 0; i < 3; i++) {
+                var clonedNode = bookNode.cloneNode(true);
+                catalogNode.appendChild(clonedNode);
+            }
+
+            var transformerFactory = TransformerFactory.newInstance();
+            var transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(dst);
+
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+
+            transformer.transform(source, result);
+
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Can not parse XML", e);
+        }
+    }
 
     public Catalog readXml(Reader reader) {
         try {
