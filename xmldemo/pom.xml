@@ -75,10 +75,10 @@
                 </execution>
             </executions>
             <configuration>
-                <generatePackage>jaxbgen</generatePackage>
+                <generatePackage>gpx</generatePackage>
                 <schemaDirectory>src/main/resources</schemaDirectory>
                 <schemaIncludes>
-                    <include>catalog-ns2.xsd</include>
+                    <include>gpx.xsd</include>
                 </schemaIncludes>
             </configuration>
         </plugin>
