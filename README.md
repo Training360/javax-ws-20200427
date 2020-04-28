@@ -6,3 +6,9 @@
 * JSON
 * REST
 * JAX-RS
+
+```xml
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation=
+                   "https://training360.com/schemas/catalog catalog-ns.xsd"
+```
