@@ -1,11 +1,13 @@
 package xpath;
 
 import dom.DomService;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 import java.io.BufferedReader;
@@ -15,6 +17,18 @@ import java.io.Reader;
 
 public class XpathService {
 
+    private Document loadXmlWithNamespace(Reader source) {
+        try {
+            var factory = DocumentBuilderFactory.newInstance();
+            factory.setNamespaceAware(true);
+            var builder = factory.newDocumentBuilder();
+            return builder.parse(new InputSource(source));
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Can not parse xml", e);
+        }
+    }
+
     public Node findNodeByIsbn10(Reader source, String isbn10) {
         // xpath
         try {
@@ -22,9 +36,11 @@ public class XpathService {
 
             var xpath = factory.newXPath();
             xpath.setNamespaceContext(new MyCatalogNamespaceContext());
-            var expr = xpath.compile(String.format("/c:catalog/c:book[@isbn10 = \"%s\"]", isbn10));
+            String query = String.format("/c:catalog/c:book[@isbn10 = \"%s\"]", isbn10);
+            System.out.println(query);
+            var expr = xpath.compile(query);
             return  (Node) expr.evaluate(
-                    new InputSource(source), XPathConstants.NODE);
+                    loadXmlWithNamespace(source), XPathConstants.NODE);
         }
         catch (Exception e) {
             throw new IllegalStateException("Can not run XPath", e);
@@ -62,7 +78,10 @@ public class XpathService {
 //            new XpathService().runXPath(reader);
 
             var node = new XpathService().findNodeByIsbn10(reader, "1590597060");
-            System.out.println(((Element)node).getElementsByTagName("title").item(0).getChildNodes().item(0).getNodeValue());
+            System.out.println("N:" + node);
+            System.out.println(((Element)node)
+                    .getElementsByTagNameNS("http://training360.com/schemas/catalog",
+                    "title").item(0).getChildNodes().item(0).getNodeValue());
         }
         catch (IOException ioe) {
             throw new IllegalStateException("Can not read file", ioe);

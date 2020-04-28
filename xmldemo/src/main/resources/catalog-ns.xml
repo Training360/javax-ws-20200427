@@ -5,4 +5,7 @@
     <c:book isbn10="1590597060">
         <c:title>Pro XML Development with Java Technology</c:title>
     </c:book>
+    <c:book isbn10="1590597060">
+        <c:title>Pro XML Development with Java Technology 2</c:title>
+    </c:book>
 </c:catalog>

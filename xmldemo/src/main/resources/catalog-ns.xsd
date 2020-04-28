@@ -13,7 +13,7 @@
   </xs:complexType>
   <xs:complexType name="catalogType">
     <xs:sequence>
-      <xs:element type="cat:bookType" name="book" xmlns:cat="http://training360.com/schemas/catalog"/>
+      <xs:element type="cat:bookType" name="book" xmlns:cat="http://training360.com/schemas/catalog" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>
