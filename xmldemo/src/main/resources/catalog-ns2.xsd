@@ -1,0 +1,23 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://training360.com/schemas/catalog"
+           xmlns="http://training360.com/schemas/catalog"
+           elementFormDefault="qualified" >
+    <xs:element name="catalog">
+        <xs:annotation>
+            <xs:documentation>Catalog of books</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="book" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element type="xs:string" name="title"/>
+                            <xs:element type="xs:string" name="available" minOccurs="0"/>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="isbn10" use="optional"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

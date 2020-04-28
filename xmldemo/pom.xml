@@ -61,5 +61,29 @@
 
     </dependencies>
 
+    <build>
+        <plugins>
+        <plugin>
+            <groupId>org.jvnet.jaxb2.maven2</groupId>
+            <artifactId>maven-jaxb2-plugin</artifactId>
+            <version>0.14.0</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <generatePackage>jaxbgen</generatePackage>
+                <schemaDirectory>src/main/resources</schemaDirectory>
+                <schemaIncludes>
+                    <include>catalog-ns2.xsd</include>
+                </schemaIncludes>
+            </configuration>
+        </plugin>
+        </plugins>
+    </build>
+
 
 </project>

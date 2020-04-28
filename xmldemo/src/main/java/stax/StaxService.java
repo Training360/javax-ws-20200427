@@ -1,10 +1,5 @@
 package stax;
 
-import dom.Book;
-import dom.Catalog;
-import dom.DomService;
-import sax.SaxService;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -113,7 +108,7 @@ public class StaxService {
 //            }
 
         var service = new StaxService();
-        var catalog = new Catalog(List.of(new dom.Book("111", "aaa"),
+        var catalog = new Catalog(List.of(new Book("111", "aaa"),
                 new Book("222", "bbb")));
         var writer = new StringWriter();
         service.writeCatalog(writer, catalog);
