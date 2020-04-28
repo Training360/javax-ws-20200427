@@ -5,7 +5,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import saxns.CatalogSchemaValidator;
 
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -17,9 +16,20 @@ import java.io.Reader;
 public class XpathService {
 
     public Node findNodeByIsbn10(Reader source, String isbn10) {
-        return null;
+        // xpath
+        try {
+            var factory = XPathFactory.newInstance();
 
-        // System.out.println(node.getElementsByTagName("title").item(0).getChildNodes().item(0).getNodeValue());
+            var xpath = factory.newXPath();
+            xpath.setNamespaceContext(new MyCatalogNamespaceContext());
+            var expr = xpath.compile(String.format("/c:catalog/c:book[@isbn10 = \"%s\"]", isbn10));
+            return  (Node) expr.evaluate(
+                    new InputSource(source), XPathConstants.NODE);
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Can not run XPath", e);
+        }
+
     }
 
     public void runXPath(Reader source) {
@@ -46,10 +56,13 @@ public class XpathService {
 
     public static void main(String[] args) {
         var reader = new BufferedReader(new InputStreamReader(
-                DomService.class.getResourceAsStream("/catalog.xml")
+                DomService.class.getResourceAsStream("/catalog-ns.xml")
         ));
         try (reader) {
-            new XpathService().runXPath(reader);
+//            new XpathService().runXPath(reader);
+
+            var node = new XpathService().findNodeByIsbn10(reader, "1590597060");
+            System.out.println(((Element)node).getElementsByTagName("title").item(0).getChildNodes().item(0).getNodeValue());
         }
         catch (IOException ioe) {
             throw new IllegalStateException("Can not read file", ioe);
