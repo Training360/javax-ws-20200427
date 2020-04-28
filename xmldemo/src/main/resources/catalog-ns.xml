@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Catalog of books -->
+<c:catalog xmlns:c="http://training360.com/schemas/catalog">
+    <c:book isbn10="1590597060">
+        <c:title>Pro XML Development with Java Technology</c:title>
+    </c:book>
+</c:catalog>
