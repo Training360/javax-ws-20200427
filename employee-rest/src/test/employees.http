@@ -1,0 +1,34 @@
+### List employees
+GET http://localhost:8080/api/employees
+Accept: application/json
+
+### Get employee by id
+GET http://localhost:8080/api/employees/2
+Accept: application/json
+
+
+### Get employee by id
+GET http://localhost:8080/api/employees/100
+Accept: application/json
+
+
+### Create employee
+POST http://localhost:8080/api/employees
+Content-Type: application/json
+
+{
+"name": "Idea Doe"
+}
+
+### Update employee
+POST http://localhost:8080/api/employees/1
+Content-Type: application/json
+
+{
+  "name": "Idea Doe 2"
+}
+
+### Delete
+DELETE http://localhost:8080/api/employees/1
+
+###
