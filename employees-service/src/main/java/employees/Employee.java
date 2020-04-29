@@ -9,9 +9,9 @@ public class Employee {
 
     private Long id;
 
-    private String name;
+    private String employeeName;
 
-    public Employee(String name) {
-        this.name = name;
+    public Employee(String employeeName) {
+        this.employeeName = employeeName;
     }
 }
